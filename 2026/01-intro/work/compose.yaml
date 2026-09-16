@@ -5,7 +5,7 @@ services:
     command:
       - "-promscrape.config=/etc/scrape.yaml"
     volumes:
-      - ./data:/victoria-metrics-data
+      - victoria-metrics-data:/victoria-metrics-data
       - ./scrape.yaml:/etc/scrape.yaml
 
   vmalert:
@@ -29,10 +29,9 @@ services:
 
   grafana:
     image: grafana/grafana:13.0
-    user: root:root
     network_mode: host
     volumes:
-      - ./grafana_data:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
 
   alert_manager:
     image: prom/alertmanager:v0.34.0
@@ -41,3 +40,7 @@ services:
       - '--config.file=/etc/config.yaml'
     volumes:
       - ./alert_manager/config.yaml:/etc/config.yaml
+
+volumes:
+  grafana-data:
+  victoria-metrics-data:
