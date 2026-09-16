@@ -1,0 +1,19 @@
+global:
+  smtp_smarthost: '<your_data>'
+  smtp_from: '<your_data>'
+  smtp_auth_username: '<your_data>'
+  smtp_auth_password: '<your_data>'
+  smtp_require_tls: false
+
+route:
+  receiver: 'email-admins'
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 1h
+
+receivers:
+  - name: 'email-admins'
+    email_configs:
+      - to: 'bga05@inbox.ru'
+        send_resolved: true
