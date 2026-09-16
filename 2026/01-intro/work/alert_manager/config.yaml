@@ -15,5 +15,5 @@ route:
 receivers:
   - name: 'email-admins'
     email_configs:
-      - to: 'bga05@inbox.ru'
+      - to: '<your-email-data>'
         send_resolved: true
