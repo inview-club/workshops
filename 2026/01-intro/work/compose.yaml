@@ -1,0 +1,46 @@
+services:
+  victoria:
+    network_mode: host
+    image: victoriametrics/victoria-metrics:v1.152.0
+    command:
+      - "-promscrape.config=/etc/scrape.yaml"
+    volumes:
+      - victoria-metrics-data:/victoria-metrics-data
+      - ./scrape.yaml:/etc/scrape.yaml
+
+  vmalert:
+    image: victoriametrics/vmalert:v1.152.0
+    network_mode: host
+    command:
+      - "-rule=/etc/rules/*.yml"
+      - "-datasource.url=http://127.0.0.1:8428"
+      - "-notifier.url=http://127.0.0.1:9093"
+    volumes:
+      - ./rules:/etc/rules
+
+  node_exporter:
+    network_mode: host
+    image: quay.io/prometheus/node-exporter:latest
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+
+  grafana:
+    image: grafana/grafana:13.0
+    network_mode: host
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  alert_manager:
+    image: prom/alertmanager:v0.34.0
+    network_mode: host
+    command:
+      - '--config.file=/etc/config.yaml'
+    volumes:
+      - ./alert_manager/config.yaml:/etc/config.yaml
+
+volumes:
+  grafana-data:
+  victoria-metrics-data:
