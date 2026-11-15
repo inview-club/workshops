@@ -1,0 +1,37 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_USER" --password-stdin $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
+  rules:
+    - when: always
+  tags:
+    - docker
+
+lint:
+  image: golangci/golangci-lint:v1.56.2
+  stage: test
+  script:
+    - golangci-lint run --issues-exit-code 0 --print-issued-lines=false --out-format line-number
+  rules:
+    - when: always
+  tags:
+    - docker
+
+test:
+  stage: test
+  image: golang:1.25
+  script:
+    - go test ./...
+  rules:
+    - when: always
+  tags:
+    - docker

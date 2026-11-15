@@ -1,0 +1,12 @@
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine-v19.5.3
+    restart: unless-stopped
+
+    volumes:
+      - ./config.toml:/etc/gitlab-runner/config.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m

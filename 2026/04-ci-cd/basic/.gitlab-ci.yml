@@ -1,0 +1,17 @@
+# CI/CD Workshop
+# Команды для работы с приложением описаны в README.md
+
+# Docker-образ по умолчанию для всех Jobs
+default:
+  image: alpine:3.21
+
+# Этапы выполнения Pipeline
+stages:
+  - test
+  - build
+
+# Пример рабочей Job
+example_job:
+  stage: test
+  script:
+    - echo "Тестовая джоба успешно выполнена" 

@@ -1,0 +1,26 @@
+# GitLab Runner configuration (contains authentication token)
+config.toml
+.runner_system_id
+
+# Go build artifacts
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+*.prof
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
