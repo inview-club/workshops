@@ -163,7 +163,7 @@ docker compose up -d grafana
 
 Переходим на http://localhost:3000.
 
-Первый вход: `admin` / `admin`. Grafana предложит изменить данные входа: ставим снова `admin` / `admin`, чтобы потом не забыть креды =)
+Первый вход: `admin` / `admin`. Grafana предложит изменить данные входа: ставим снова `admin1` / `admin1`, чтобы потом не забыть креды =)
 
 В левом боковом меню откройте **Connections → Data sources**. Нажимаем "Add data source" и выбираем **Prometheus**. Далее Вам необходимо заполнить только лишь поле "Prometheus server URL": http://victoria:8428.
 
