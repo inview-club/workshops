@@ -1,0 +1,11 @@
+route:
+  receiver: workshop
+  group_by: [alertname, instance]
+  group_wait: 5s
+  group_interval: 5s
+  repeat_interval: 1h
+
+# Alerts are visible in the Alertmanager UI. Configure a receiver here
+# to deliver notifications to email, Telegram or a webhook.
+receivers:
+  - name: workshop

@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: site
+    metrics_path: /probe
+    params:
+      module: [http_site]
+      target: [http://site:8080/site]
+    static_configs:
+      - targets: [blackbox:9115]
+        labels:
+          instance: http://site:8080/site

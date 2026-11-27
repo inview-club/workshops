@@ -1,0 +1,11 @@
+groups:
+  - name: website
+    rules:
+      - alert: WebsiteUnavailable
+        expr: probe_success{job="site"} == 0
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Проверка сайта не проходит"
+          description: "Blackbox не может успешно проверить {{ $labels.instance }}"

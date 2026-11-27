@@ -1,0 +1,64 @@
+name: inview-blackbox
+services:
+  site:
+    image: python:3.13-alpine
+    command:
+    - python
+    - /app/server.py
+    volumes:
+    - ./site:/app:ro
+    ports:
+    - 127.0.0.1:8080:8080
+  blackbox:
+    image: quay.io/prometheus/blackbox-exporter:v0.29.1
+    command:
+    - --config.file=/etc/blackbox/blackbox.yml
+    volumes:
+    - ./blackbox:/etc/blackbox:ro
+    ports:
+    - 127.0.0.1:9115:9115
+  grafana:
+    image: grafana/grafana:13.3.2
+    volumes:
+    - grafana_data:/var/lib/grafana
+    ports:
+    - 127.0.0.1:3000:3000
+  victoria:
+    image: victoriametrics/victoria-metrics:v1.157.0
+    command:
+    - -promscrape.config=/etc/victoria/scrape.yml
+    - -storageDataPath=/storage
+    - -search.latencyOffset=0s
+    volumes:
+    - ./victoria:/etc/victoria:ro
+    - victoria_data:/storage
+    ports:
+    - 127.0.0.1:8428:8428
+  vmalert:
+    image: victoriametrics/vmalert:v1.157.0
+    command:
+    - -rule=/etc/vmalert/alerts.yml
+    - -datasource.url=http://victoria:8428
+    - -notifier.url=http://alertmanager:9093
+    - -external.url=http://localhost:8880
+    - -evaluationInterval=5s
+    - -rule.evalDelay=0s
+    volumes:
+    - ./vmalert:/etc/vmalert:ro
+    ports:
+    - 127.0.0.1:8880:8880
+  alertmanager:
+    image: prom/alertmanager:v0.35.1
+    command:
+    - --config.file=/etc/alertmanager/alertmanager.yml
+    - --storage.path=/alertmanager
+    - --cluster.listen-address=
+    volumes:
+    - ./alertmanager:/etc/alertmanager:ro
+    - alertmanager_data:/alertmanager
+    ports:
+    - 127.0.0.1:9093:9093
+volumes:
+  grafana_data: null
+  victoria_data: null
+  alertmanager_data: null

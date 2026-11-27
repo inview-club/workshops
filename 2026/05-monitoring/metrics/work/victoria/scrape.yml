@@ -1,0 +1,5 @@
+# Add the site job at step 3 of WORKSHOP_GUIDE.md.
+global:
+  scrape_interval: 5s
+
+scrape_configs: []
